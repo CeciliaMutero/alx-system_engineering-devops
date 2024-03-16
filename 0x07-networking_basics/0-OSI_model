@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 #this script defines the OSI model
 echo "2"
-echo "3"
+echo "2"
