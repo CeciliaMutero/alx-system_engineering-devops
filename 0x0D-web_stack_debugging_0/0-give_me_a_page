@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#fix my server
+docker run -p 8080:80 -d -it holbertonschool/265-0
+echo "Hello Holberton" > /var/www/html/index.html
+apt-get update
+apt-get install curl -y
+curl 0:8080
