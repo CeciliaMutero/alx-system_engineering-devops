@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# installing nginx
+sudo apt update
+sudo apt install nginx -y
+if [ ! -f /etc/nginx/nginx.conf ]; then
+  echo "Error: Nginx installation failed"
+  exit 1
+fi
+sudo sed -i 's/^\(listen 80;\)/\1 default_server;/g' /etc/nginx/sites-available/default
+sudo kill -s HUP $(cat /var/run/nginx.pid)
+netstat -tuln | grep ":80 " > /dev/null
+if [ $? -eq 0 ]; then
+  echo "Nginx is listening on port 80"
+else
+  echo "Error: Nginx is not listening on port 80"
+  exit 1
+fi
+echo "Hello World!" | sudo tee /var/www/html/index.html > /dev/null
+response=$(curl -s http://localhost)
+if [[ $response == *"Hello World!"* ]]; then
+  echo "Nginx is serving 'Hello World!'"
+else
+  echo "Error: 'Hello World!' is not served by nginx"
+  exit 1
+fi
+echo "Installation and configuration completed successfully"
